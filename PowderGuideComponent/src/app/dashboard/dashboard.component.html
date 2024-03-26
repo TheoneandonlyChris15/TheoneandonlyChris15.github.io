@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="dashboard.component.scss">
+<div fxHide.lt-sm="">
+
+  <div style="display: flex; align-items: center;">
+    <img src="assets/snowflake.png" alt="PowderGuide Logo" style="height: 50px; width: 50px; margin: 10px;">
+    <p style="font-family: 'Courier New', Courier, monospace; font-size: 24px; margin: 10px;">PowderGuide</p>
+    <app-searchterm></app-searchterm>
+    <div class="color-bar">
+      <span style="width: 10%;"></span>
+      <div style="margin-top: 7px;">
+        <label style="margin-right: 26px;">0 </label>
+        <label style="margin-right: 26px;">40 </label>
+        <label style="margin-right: 26px;">80 </label>
+        <label style="margin-right: 26px;">120 </label>
+        <label style="margin-right: 26px;">160 </label>
+        <label>200cm</label>
+      </div>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="skiregion">
+      <th mat-header-cell *matHeaderCellDef>Skiregion</th>
+      <td mat-cell *matCellDef="let element">{{ element.skiregion }}</td>
+    </ng-container>
+    <ng-container matColumnDef="lastUpdated">
+      <th mat-header-cell *matHeaderCellDef>Zuletzt aktualisiert</th>
+      <td mat-cell *matCellDef="let element">{{ formatDate(element.lastUpdated) }}</td>
+    </ng-container>
+    <ng-container matColumnDef="snowDepth">
+      <th mat-header-cell *matHeaderCellDef>Schneetiefe (cm)</th>
+      <td mat-cell *matCellDef="let element">{{ element.snowDepth }}</td>
+    </ng-container>
+    <ng-container matColumnDef="powderSnow">
+      <th mat-header-cell *matHeaderCellDef>Neuschnee (cm)</th>
+      <td mat-cell *matCellDef="let element" [ngStyle]="getRowStyles(element.powderSnow)">{{ element.powderSnow }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" [routerLink]="['/detail', element.id]"></tr>
+  </table>
+</div>
+
+<div fxHide.gt-sm>
+
+  <div style="display: flex; align-items: center;">
+    <img src="assets/snowflake.png" alt="PowderGuide Logo" style="height: 50px; width: 50px; margin: 10px;">
+    <p style="font-family: 'Courier New', Courier, monospace; font-size: 24px; margin: 10px;">PowderGuide</p>
+  </div>
+
+  <mat-list>
+    <mat-list-item *ngFor="let element of dataSource.data" [routerLink]="['/detail', element.id]">
+      <div matListItemTitle>{{ element.name }}</div>
+      <div matListItemLine>Zuletzt aktualisiert: {{ formatDate(element.lastUpdated) }}</div>
+      <div matListItemLine [ngStyle]="getRowStyles(+element.powderSnow)">Neuschnee (cm): {{ element.powderSnow }}</div>
+    </mat-list-item>
+  </mat-list>
+</div>
+
